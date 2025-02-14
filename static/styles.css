@@ -35,8 +35,8 @@ header {
   text-align: center;
   padding: 0;
   margin-top: 0;
-  margin-left: 20px;
-  margin-right: 20px;
+  margin-left: 0px;
+  margin-right: 0px;
   margin-bottom: 20px;
 }
 
@@ -63,13 +63,14 @@ footer {
 /* Band Cards Grid */
 #band-container {
   display: grid;
+  margin-right: 20px;
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
   gap: 20px;
   padding: 20px;
 }
 
 .card {
-  background-color: #f4f4f4;
+  background-color: #e9e7dd;
   padding: 10px;
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);

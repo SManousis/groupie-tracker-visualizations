@@ -16,40 +16,61 @@ func SearchHandler(w http.ResponseWriter, r *http.Request, artists *[]Artist) {
 		return
 	}
 
-	var list []string
+	var listSec []string
+	var startsArtist []string
+	var startsMembers []string
+	var startsLocation []string
+	var startsCreation []string
+	var startsAlbum []string
 
 	// Check if the search query matches any details
 	for _, v := range *artists {
 		// Search by artist name
-		if strings.Contains(strings.ToLower(v.Name), query) {
-			list = append(list, v.Name+" - artist/band")
+		if strings.HasPrefix(strings.ToLower(v.Name), query) {
+			startsArtist = append(startsArtist, v.Name+" - artist/band")
+		} else if strings.Contains(strings.ToLower(v.Name), query) {
+			listSec = append(listSec, v.Name+" - artist/band")
 		}
 
 		// Search by band members
 		for _, member := range v.Members {
-			if strings.Contains(strings.ToLower(member), query) {
-				list = append(list, member+" - member of "+v.Name)
+			if strings.HasPrefix(strings.ToLower(member), query) {
+				startsMembers = append(startsMembers, member+" - member of "+v.Name)
+			} else if strings.Contains(strings.ToLower(member), query) {
+				listSec = append(listSec, member+" - member of "+v.Name)
 			}
 		}
 
-		// Now check for location-based search separately
+		// Check for location
 		for _, location := range v.Locations {
-			if strings.Contains(strings.ToLower(location), query) {
-				list = append(list, v.Name+" - artist/band in location: "+location)
+			if strings.HasPrefix(strings.ToLower(location), query) {
+				startsLocation = append(startsLocation, v.Name+" - artist/band performing in: "+location)
+			} else if strings.Contains(strings.ToLower(location), query) {
+				listSec = append(listSec, v.Name+" - artist/band performing in: "+location)
 			}
 		}
 
 		// Check if the creation date matches
-		if strings.Contains(strconv.Itoa(v.CreationDate), query) {
-			list = append(list, v.Name+" - artist/band created in "+strconv.Itoa(v.CreationDate))
+		if strings.HasPrefix(strconv.Itoa(v.CreationDate), query) {
+			startsCreation = append(startsCreation, v.Name+" - artist/band created in"+strconv.Itoa(v.CreationDate))
+		} else if strings.Contains(strconv.Itoa(v.CreationDate), query) {
+			listSec = append(listSec, v.Name+" - artist/band created in "+strconv.Itoa(v.CreationDate))
 		}
 
 		// Check if the first album date matches
-		if strings.Contains(strings.ToLower(v.FirstAlbum), query) {
-			list = append(list, v.Name+" - artist/band first album released in "+strings.ToLower(v.FirstAlbum))
+		if strings.HasPrefix(strings.ToLower(v.FirstAlbum), query) {
+			startsAlbum = append(startsAlbum, v.Name+" - first album released in "+strings.ToLower(v.FirstAlbum))
+		} else if strings.Contains(strings.ToLower(v.FirstAlbum), query) {
+			listSec = append(listSec, v.Name+" - artist/band first album released in "+strings.ToLower(v.FirstAlbum))
 		}
 	}
 
+	// Combine the results
+	listPrime := append(startsArtist, startsMembers...)
+	listPrime = append(listPrime, startsLocation...)
+	listPrime = append(listPrime, startsCreation...)
+	listPrime = append(listPrime, startsAlbum...)
+	list := append(listPrime, listSec...)
 	// Return the list of suggestions as JSON
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(list)

@@ -23,18 +23,18 @@ func main() {
 
 	// Serve the homepage on /
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		groupie.ServeHome(w, r, &artists) // Pass the artists slice to ServeHome
+		groupie.ServeHome(w, r, &artists)
 	})
 	http.HandleFunc("/geolocalization", func(w http.ResponseWriter, r *http.Request) {
-		groupie.GeolocalizationHandler(w, r, &artists) // Pass the artists slice
+		groupie.GeolocalizationHandler(w, r, &artists)
 	})
 	http.HandleFunc("/search", func(w http.ResponseWriter, r *http.Request) {
-		groupie.SearchHandler(w, r, &artists) // Pass the artists slice
+		groupie.SearchHandler(w, r, &artists)
 	})
 	http.HandleFunc("/result", func(w http.ResponseWriter, r *http.Request) {
-		groupie.ResultHome(w, r, &artists) // Pass the artists slice
+		groupie.ResultHome(w, r, &artists)
 	})
-	// Get port from environment variable or default to 8080
+	// Get port or default to 8080
 	port := os.Getenv("PORT")
 	if port == "" {
 		port = "8080"

@@ -176,7 +176,7 @@ function setupSearchBar() {
     } catch (error) {
       console.error('Error fetching search results:', error);
     }
-  }, 300); // Adjust the delay (e.g., 300ms)
+  }, 100); // Adjust the delay
 
   // Attach the debounced function to the input event
   searchInput.addEventListener('input', () => {
