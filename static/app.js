@@ -132,8 +132,8 @@ function setupSearchBar() {
         return; // Exit if suggestions are not valid
       }
   
-      // Limit the number of displayed suggestions (e.g., max 10)
-      const limitedSuggestions = suggestions.slice(0, 10);
+      // Limit the number of displayed suggestions
+      const limitedSuggestions = suggestions.slice(0, 20);
   
       // Display suggestions dynamically
       if (limitedSuggestions.length > 0) {
