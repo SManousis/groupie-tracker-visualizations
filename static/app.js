@@ -99,6 +99,7 @@ function debounce(func, delay) {
 function setupSearchBar() {
   const searchInput = document.getElementById('search');
   const suggestionsDisplay = document.querySelector('.search-display');
+  const errorMessage = document.getElementById('error-message');
 
   // Debounced function to handle the input event
   const fetchSuggestions = debounce(async () => {
@@ -145,24 +146,7 @@ function setupSearchBar() {
       } else {
         suggestionsDisplay.classList.remove('has-suggestions'); // Remove border if no suggestions
       }
-  
-      // Check if search was for a location and highlight matching artists
-      const locationSuggestions = limitedSuggestions.filter(s => s.includes(' - performing in'));
-  
-      if (locationSuggestions.length > 0) {
-        locationSuggestions.forEach(location => {
-          const artistName = location.split(' - ')[0].toLowerCase();
-          const cards = document.querySelectorAll('.card');
-          cards.forEach(card => {
-            const nameElem = card.querySelector('.name');
-            if (nameElem && nameElem.textContent.trim().toLowerCase() === artistName) {
-              card.classList.add('highlight');
-              card.scrollIntoView({ behavior: "smooth", block: "center" });
-            }
-          });
-        });
-      }
-  
+
       // Optional: Add click functionality for suggestions
       document.querySelectorAll('.suggestion').forEach((item) => {
         item.addEventListener('click', () => {
@@ -187,14 +171,44 @@ function setupSearchBar() {
   // Trigger search when pressing "Enter"
   searchInput.addEventListener('keydown', (event) => {
     if (event.key === 'Enter' && searchInput.value.trim() !== '') {
+      // Automatically select the first suggestion if available
+      if (!selectedValue && suggestionsDisplay.querySelector('.suggestion')) {
+        selectedValue = suggestionsDisplay.querySelector('.suggestion').textContent;
+      }
       search();
+
+      // Clear suggestions after search
+      clearText();
+    }
+  });
+
+  // Trigger search when clicking the "Search" button
+  const searchButton = document.getElementById('search-btn');
+  searchButton.addEventListener('click', () => {
+    if (searchInput.value.trim() !== '') {
+      // Automatically select the first suggestion if available
+      if (!selectedValue && suggestionsDisplay.querySelector('.suggestion')) {
+        selectedValue = suggestionsDisplay.querySelector('.suggestion').textContent;
+      }
+      search();
+
+      // Clear suggestions after search
+      clearText();
     }
   });
 }
 
+
 function search() {
+  const errorMessage = document.getElementById('error-message'); // Error message container
+  
+  // Reset any previous error messages
+  errorMessage.style.display = 'none';
+
   if (!selectedValue) {
-    alert('Please select or type a valid search term.');
+    // Display error message on the page
+    errorMessage.textContent = 'Please select or type a valid search term.';
+    errorMessage.style.display = 'block';
     return;
   }
 
@@ -228,27 +242,36 @@ function search() {
       });
 
       if (!found) {
-        alert("No matching artist card found on the page.");
+        errorMessage.textContent = 'No matching artist card found on the page.';
+        errorMessage.style.display = 'block';
       }
     })
     .catch((error) => {
       console.error('Error fetching matched artist:', error);
-      alert('No matching artist found.');
+      errorMessage.textContent = 'No matching artist found.';
+      errorMessage.style.display = 'block';
     });
 }
 
-// Clear the search and reset highlighted cards
+// Clear the search, reset highlighted cards, and clear suggestions
 function clearText() {
-  inputBar.value = '';
-  selectedValue = ''; // Reset selected value
-  clearBtn.style.display = 'none';
+  const suggestionsDisplay = document.querySelector('.search-display');
+  const searchInput = document.getElementById('search');
+  const clearBtn = document.querySelector('.clear-btn');
+  
+  searchInput.value = '';  // Clear the input field
+  selectedValue = '';      // Reset selected value
+  clearBtn.style.display = 'none';  // Hide the clear button
+  
+  // Remove highlighted cards
   document.querySelectorAll('.card.highlight').forEach(card => {
     card.classList.remove('highlight');
   });
-}
 
-// Event listener for the search button click
-document.getElementById('search-btn').addEventListener('click', search);
+  // Clear suggestions
+  suggestionsDisplay.innerHTML = '';
+  suggestionsDisplay.classList.remove('has-suggestions');
+}
 
 // Show or hide the clear button based on input
 const inputBar = document.getElementById('search');

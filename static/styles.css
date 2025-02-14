@@ -286,6 +286,20 @@ header .search-wrapper .suggestion:hover {
   background-color: #f0f0f0;
 }
 
+#error-message {
+  display: block;
+  text-align: center; /* Center the text */
+  margin-top: 20px; /* Small margin from the header */
+  padding: 10px;
+  background-color: rgba(255, 0, 0, 0.1); /* Background color to highlight the error */
+  border: 1px solid rgb(185, 17, 17); /* Border color */
+  color: rgb(185, 17, 17); /* Red text color */
+  font-weight: bold;
+  max-width: 500px;
+  margin-left: auto;
+  margin-right: auto; /* Center horizontally */
+  border-radius: 5px; /* Rounded corners */
+}
 
 
 .clear-btn {
@@ -325,14 +339,13 @@ header .search-wrapper .suggestion:hover {
 }
 /* Highlighted card styling */
 .highlight {
-  animation: highlightFade 2s ease;
+  animation: highlightFade 1s ease;
   background: #eb4b0c;
 }
 
 @keyframes highlightFade {
   0% { background-color: #e4340d; }
-  33% { background-color: #ffb700; }
-  66% { background-color: #eb3b13; }
+  50% { background-color: #ffb700; }
   100% { background-color: transparent; }
 }
 

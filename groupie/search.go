@@ -52,7 +52,7 @@ func SearchHandler(w http.ResponseWriter, r *http.Request, artists *[]Artist) {
 
 		// Check if the creation date matches
 		if strings.HasPrefix(strconv.Itoa(v.CreationDate), query) {
-			startsCreation = append(startsCreation, v.Name+" - artist/band created in"+strconv.Itoa(v.CreationDate))
+			startsCreation = append(startsCreation, v.Name+" - artist/band created in "+strconv.Itoa(v.CreationDate))
 		} else if strings.Contains(strconv.Itoa(v.CreationDate), query) {
 			listSec = append(listSec, v.Name+" - artist/band created in "+strconv.Itoa(v.CreationDate))
 		}
