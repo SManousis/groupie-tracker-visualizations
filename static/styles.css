@@ -4,6 +4,7 @@ body {
   margin: 0;
   padding: 0;
   position: relative;
+  overflow-x: hidden;
   height: 100%; /* Ensure body takes full height of the viewport */
   background-color: #fafafa; /* Set a fallback background color for the body */
 }
@@ -70,14 +71,13 @@ footer {
 }
 
 .card {
-  background-color: #e9e7dd;
+  background-color: #f7f6f6;
   padding: 10px;
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   text-align: center;
   cursor: pointer;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
-  width: 100%;
 }
 
 .card:hover {
@@ -120,6 +120,14 @@ footer {
   transition: opacity 0.5s ease;
 }
 @media (max-width: 600px) {
+  header {
+    height: 150px;
+  }
+
+  header img {
+    max-width: 80%;
+  }
+  
   .expanded-card {
     width: 95%;
     padding: 10px;
@@ -202,10 +210,6 @@ ul li {
 @media (max-width: 600px) {
   #band-container {
     grid-template-columns: 1fr 1fr;
-  }
-
-  .card {
-    width: 100%;
   }
 
   .expanded-card {
